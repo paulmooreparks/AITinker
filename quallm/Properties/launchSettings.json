@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "quallm": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
