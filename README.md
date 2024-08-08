@@ -1,2 +1,2 @@
 # quallm
-QUery Any LLM - A CLI application for LLM interactions.
+Query Any LLM - A CLI application for LLM interactions.
