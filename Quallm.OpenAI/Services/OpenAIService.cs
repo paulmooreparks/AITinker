@@ -5,15 +5,15 @@ using System.Threading.Tasks;
 
 using Newtonsoft.Json;
 
-using Quallm.Cli.Models;
+using Quallm.OpenAI.Models;
 
-namespace Quallm.Cli.Services;
+namespace Quallm.OpenAI.Services;
 
-public class ChatGPTService {
-    private readonly ChatGPTConfig _config;
+public class OpenAIService {
+    private readonly OpenAIConfig _config;
     private readonly HttpClient _httpClient;
 
-    public ChatGPTService(ChatGPTConfig config) {
+    public OpenAIService(OpenAIConfig config) {
         _config = config;
         _httpClient = new HttpClient();
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _config.ApiKey);

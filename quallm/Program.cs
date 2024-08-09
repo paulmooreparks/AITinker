@@ -1,12 +1,13 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Cliffer;
 using Quallm.Cli.Services;
-using Quallm.Cli.Models;
-using Quallm.Cli.Extensions;
-using Microsoft.Extensions.FileProviders;
+using Quallm.OpenAI.Models;
+using Quallm.OpenAI.Services;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using Quallm.OpenAI.Extensions;
 
 namespace Quallm.Cli;
 
@@ -53,11 +54,9 @@ internal class Program {
         var configuration = clifferBuilder.BuildConfiguration();
 
         clifferBuilder.ConfigureServices((services) => {
-            var chatGPTConfig = configuration.GetSection("ChatGPT").Get<ChatGPTConfig>() ?? new ChatGPTConfig();
-            services.AddSingleton(chatGPTConfig);
-            services.ConfigureWritable<ChatGPTConfig>(configuration.GetSection("ChatGPT"), _configFileName);
-            services.AddSingleton<ChatGPTService>();
-            services.AddSingleton<IFileProvider>(_fileProvider);
+            services.AddSingleton<IConfiguration>(configuration);
+            // services.AddSingleton<IFileProvider>(_fileProvider);
+            services.AddOpenAIServices(configuration);
         });
 
 

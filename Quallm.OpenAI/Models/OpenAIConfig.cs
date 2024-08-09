@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Quallm.Cli.Models;
+namespace Quallm.OpenAI.Models;
 
-public class ChatGPTConfig {
+public class OpenAIConfig {
     public string? ApiKey { get; set; }
     public string? ApiUrl { get; set; }
 }

@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
-using Microsoft.Extensions.FileProviders;
 
-namespace Quallm.Cli.Services;
+namespace Quallm.ConfigUtils.Services;
 
 public class WriteableSection<T> : IWriteableSection<T> where T : class, new() {
     private readonly IOptionsMonitor<T> _options;
@@ -23,10 +17,23 @@ public class WriteableSection<T> : IWriteableSection<T> where T : class, new() {
         IOptionsMonitor<T> options,
         IConfigurationRoot configuration,
         string section,
-        string file) {
+        string file,
+        IFileProvider? fileProvider = null,
+        string? appDirectory = null
+        ) {
         _options = options;
         _configuration = configuration;
-        _fileProvider = ServiceUtility.GetService<IFileProvider>()!;
+
+        if (fileProvider is not null) {
+            _fileProvider = fileProvider;
+        }
+        else if (appDirectory is not null) {
+            _fileProvider = new PhysicalFileProvider(appDirectory, Microsoft.Extensions.FileProviders.Physical.ExclusionFilters.None);
+        }
+        else {
+            _fileProvider = new PhysicalFileProvider(Environment.CurrentDirectory, Microsoft.Extensions.FileProviders.Physical.ExclusionFilters.None);
+        }
+
         _section = section;
         _file = file;
     }

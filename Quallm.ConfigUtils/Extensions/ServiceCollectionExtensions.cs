@@ -1,16 +1,19 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 
-using Quallm.Cli.Services;
+using Quallm.ConfigUtils.Services;
 
-namespace Quallm.Cli.Extensions;
+namespace Quallm.ConfigUtils.Extensions;
 
 public static class ServiceCollectionExtensions {
     public static void ConfigureWritable<T>(
         this IServiceCollection services,
         IConfigurationSection section,
-        string file = "appsettings.json") where T : class, new() 
+        string file = "appsettings.json",
+        IFileProvider? fileProvider = null,
+        string? appDirectory = null) where T : class, new() 
     {
         services.Configure<T>(section);
         services.AddTransient<IWriteableSection<T>>(provider => {

@@ -1,7 +1,7 @@
 ﻿using Cliffer;
 using Newtonsoft.Json.Linq;
 
-using Quallm.Cli.Services;
+using Quallm.OpenAI.Services;
 
 namespace Quallm.Cli.Commands;
 
@@ -9,10 +9,10 @@ namespace Quallm.Cli.Commands;
 [Argument(typeof(string), "message", "The message to send to the LLM")]
 [Option(typeof(bool), "--usage", "Show usage information", aliases: ["-u"])]
 internal class SendCommand {
-    private readonly ChatGPTService _chatGPTService;
+    private readonly OpenAIService _openAIService;
     
-    public SendCommand(ChatGPTService chatGPTService) { 
-        _chatGPTService = chatGPTService;
+    public SendCommand(OpenAIService openAIService) { 
+        _openAIService = openAIService;
     }
 
     public async Task<int> Execute(
@@ -20,7 +20,7 @@ internal class SendCommand {
         [OptionParam("--usage")] bool showUsage
         ) {
         try {
-            var response = await _chatGPTService.SendMessage(message);
+            var response = await _openAIService.SendMessage(message);
 
             // Parse the response
             var jsonResponse = JObject.Parse(response);
