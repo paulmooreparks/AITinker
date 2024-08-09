@@ -20,9 +20,26 @@ internal class SendCommand {
         [OptionParam("--usage")] bool showUsage
         ) {
         try {
+            string? pipedInput = string.Empty;
+
+            if (Console.IsInputRedirected) {
+                using (var reader = new StreamReader(Console.OpenStandardInput(), Console.InputEncoding)) {
+                    if (reader.Peek() >= 0) {
+                        pipedInput = await reader.ReadToEndAsync();
+                    }
+                }
+            }
+
+            message = string.Concat(message, pipedInput);
+
+            if (string.IsNullOrEmpty(message)) {
+                Console.WriteLine("No message provided.");
+                return Result.Error;
+            }
+
+            // Nearly all of this logic is going to move to the individual LLM libraries.
             var response = await _openAIService.SendMessage(message);
 
-            // Parse the response
             var jsonResponse = JObject.Parse(response);
             var choices = jsonResponse["choices"];
 
@@ -32,7 +49,7 @@ internal class SendCommand {
                 if (choices.Count() > 1) {
                     int choiceIndex = 1;
                     foreach (var choice in choices) {
-                        Console.WriteLine($"Reponse choice {choiceIndex}:");
+                        Console.WriteLine($"Response choice {choiceIndex}:");
                         if (choice is not null) {
                             content = choice["message"]?["content"]?.ToString();
 
