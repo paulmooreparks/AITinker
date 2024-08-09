@@ -33,3 +33,17 @@ quallm> send "What is the capital of France?"
 The capital of France is Paris.
 ```
 
+### Configuration
+
+To use quallm, you must have an API key for the LLM you wish to use. You can obtain an API key for ChatGPT from OpenAI.
+
+Once you have your API key, create a file named `appsettings.json` in the `.quallm` directory in your home directory. The file should contain the following JSON:
+
+```json
+{
+    "ChatGPT": {
+        "ApiKey": "your-api-key-here",
+        "ApiUrl": "https://api.openai.com/v1/chat/completions"
+    }
+}
+```
