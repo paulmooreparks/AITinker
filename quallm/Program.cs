@@ -8,6 +8,7 @@ using Quallm.OpenAI.Services;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using Quallm.OpenAI.Extensions;
+using Quallm.ConfigUtils.Extensions;
 
 namespace Quallm.Cli;
 
@@ -55,18 +56,18 @@ internal class Program {
 
         clifferBuilder.ConfigureServices((services) => {
             services.AddSingleton<IConfiguration>(configuration);
-            // services.AddSingleton<IFileProvider>(_fileProvider);
             services.AddOpenAIServices(configuration);
         });
 
-
-        var cli = clifferBuilder.Build();
+        var cli = clifferBuilder
+            // .BuildCommands(servicePro)
+            .Build((configuration, rootCommand, serviceProvider) => {
+                clifferBuilder.AddOpenAICommands(configuration, rootCommand, serviceProvider);
+            });
 
         ServiceUtility.SetServiceProvider(cli.ServiceProvider);
 
         ClifferEventHandler.OnExit += () => {
-            // var persistenceService = ServiceUtility.GetService<PersistenceService>()!;
-            // persistenceService.SaveVariables(variables);
         };
 
         return await cli.RunAsync(args);

@@ -13,12 +13,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Cliffer" Version="0.4.7-prerelease" />
+    <Folder Include="Extensions\" />
+    <Folder Include="Models\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Extensions\" />
-    <Folder Include="Models\" />
+    <PackageReference Include="Cliffer" Version="0.4.8-prerelease" />
   </ItemGroup>
 
   <ItemGroup>

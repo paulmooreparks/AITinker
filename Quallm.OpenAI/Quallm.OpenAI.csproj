@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Cliffer" Version="0.4.8-prerelease" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Quallm.ConfigUtils\Quallm.ConfigUtils.csproj" />
   </ItemGroup>
 
