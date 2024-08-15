@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AITinker.OpenAI", "AITinker
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ait", "ait\ait.csproj", "{75DE5011-DBD6-4C70-946F-0A2CD8234847}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AITinker", "AITinker\AITinker.csproj", "{37643B4D-82B0-44E9-9999-F0FC2197767E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,12 @@ Global
 		{75DE5011-DBD6-4C70-946F-0A2CD8234847}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{75DE5011-DBD6-4C70-946F-0A2CD8234847}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{75DE5011-DBD6-4C70-946F-0A2CD8234847}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37643B4D-82B0-44E9-9999-F0FC2197767E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37643B4D-82B0-44E9-9999-F0FC2197767E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37643B4D-82B0-44E9-9999-F0FC2197767E}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{37643B4D-82B0-44E9-9999-F0FC2197767E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37643B4D-82B0-44E9-9999-F0FC2197767E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37643B4D-82B0-44E9-9999-F0FC2197767E}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

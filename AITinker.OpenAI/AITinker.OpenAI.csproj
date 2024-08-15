@@ -15,4 +15,8 @@
     <ProjectReference Include="..\AITinker.Core\AITinker.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Properties\PublishProfiles\" />
+  </ItemGroup>
+
 </Project>

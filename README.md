@@ -2,7 +2,7 @@
 Query Any LLM - An application suite for LLM interactions.
 
 ## Overview
-AI Tinker is a toolkit for interacting with LLM (Language Model) APIs. There is a GUI that runs on Windows, Android, and some other platforms which I haven't tested. There is also a CLI which runs on Windows, Linux, and macOS.
+AI Tinker is a toolkit for interacting with LLM (Language Model) APIs. There is (er, will be) a GUI that runs on Windows, Android, and some other platforms which I haven't tested. There is also a CLI which runs on Windows, Linux, and macOS.
 
 Right now, AI Tinker only talks to ChatGPT, but in the future it will support multiple LLMs through plug-in libraries.
 
