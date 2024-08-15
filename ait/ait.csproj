@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>ait</AssemblyName>
+    <RootNamespace>AITinker.Cli</RootNamespace>
+    <Version>0.1.0-prerelease</Version>
+    <Authors>Paul M. Parks</Authors>
+    <Copyright>Copyright © 2024, Paul M. Parks</Copyright>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Extensions\" />
+    <Folder Include="Models\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AITinker.Core\AITinker.Core.csproj" />
+    <ProjectReference Include="..\AITinker.OpenAI\AITinker.OpenAI.csproj" />
+  </ItemGroup>
+
+</Project>

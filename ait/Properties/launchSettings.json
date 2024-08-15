@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "ait": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
