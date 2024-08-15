@@ -2,6 +2,9 @@
 
 namespace AITinker;
 public static class MauiProgram {
+    static MauiProgram() {
+
+    }
     public static MauiApp CreateMauiApp() {
         var builder = MauiApp.CreateBuilder();
         builder
@@ -9,7 +12,9 @@ public static class MauiProgram {
             .ConfigureFonts(fonts => {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-            });
+            })
+            .Services
+                .AddSingleton<OpenAI.Services.OpenAIService>();
 
 #if DEBUG
 		builder.Logging.AddDebug();
