@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:AITinker.ViewModels"
+    x:Class="AITinker.Views.ChatPage"
+    BindingContext="{Binding ChatViewModel, Source={StaticResource Locator}}">
+
+    <Grid Padding="10" RowDefinitions="*,Auto" ColumnDefinitions="*,Auto">
+        <!-- Message List -->
+        <CollectionView Grid.Row="0" 
+                        Grid.ColumnSpan="2"
+                        ItemsSource="{Binding MessageEntries}"
+                        BackgroundColor="White"
+                        VerticalScrollBarVisibility="Always">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout Orientation="Horizontal" Padding="5">
+                        <Label Text="{Binding Message}"
+                               Padding="10"
+                               HorizontalTextAlignment="Start">
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label"
+                                             Binding="{Binding Source}"
+                                             Value="User">
+                                    <Setter Property="BackgroundColor" Value="LightBlue" />
+                                    <Setter Property="TextColor" Value="Black" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="Label"
+                                             Binding="{Binding Source}"
+                                             Value="LLM">
+                                    <Setter Property="BackgroundColor" Value="LightGreen" />
+                                    <Setter Property="TextColor" Value="Black" />
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Input Entry -->
+        <Entry Grid.Row="1" Grid.Column="0"
+               Text="{Binding UserMessage}" 
+               Placeholder="Type your message here" 
+               HorizontalOptions="FillAndExpand"
+               VerticalOptions="Center"
+               Completed="OnEntryCompleted" />
+
+        <!-- Send Button -->
+        <Button Grid.Row="1" Grid.Column="1"
+                Text="Send"
+                Command="{Binding SendMessageCommand}"
+                WidthRequest="80"
+                HorizontalOptions="End"
+                VerticalOptions="Center" />
+    </Grid>
+</ContentPage>

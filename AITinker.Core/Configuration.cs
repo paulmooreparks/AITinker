@@ -4,6 +4,9 @@ using Microsoft.Extensions.FileProviders;
 
 using AITinker.Core.Services;
 
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
 namespace AITinker.Core;
 
 public static class Configuration {
@@ -26,6 +29,11 @@ public static class Configuration {
         }
 
         _fileProvider = new PhysicalFileProvider(_appDirectory, Microsoft.Extensions.FileProviders.Physical.ExclusionFilters.None);
+
+        if (!File.Exists(AITinker.Core.Configuration.ConfigFilePath)) {
+            var emptyObject = new JObject();
+            File.WriteAllText(AITinker.Core.Configuration.ConfigFilePath, emptyObject.ToString(Formatting.Indented));
+        }
     }
 
     public static string AppDirectoryName => _appDirectoryName;

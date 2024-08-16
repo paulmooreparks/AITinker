@@ -4,23 +4,15 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-
 using AITinker.Cli.Services;
 using AITinker.OpenAI.Extensions;
 
 namespace AITinker.Cli;
 
-internal class Program {
+internal class AitProgram {
 
     static async Task<int> Main(string[] args) {
         var clifferBuilder = new ClifferBuilder();
-
-        if (!File.Exists(AITinker.Core.Configuration.ConfigFilePath)) {
-            var emptyObject = new JObject();
-            File.WriteAllText(AITinker.Core.Configuration.ConfigFilePath, emptyObject.ToString(Formatting.Indented));
-        }
 
         clifferBuilder.ConfigureAppConfiguration((configurationBuilder) => {
             configurationBuilder.SetFileProvider(AITinker.Core.Configuration.FileProvider);
