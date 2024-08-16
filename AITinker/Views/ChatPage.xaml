@@ -6,53 +6,78 @@
     x:Class="AITinker.Views.ChatPage"
     BindingContext="{Binding ChatViewModel, Source={StaticResource Locator}}">
 
-    <Grid Padding="10" RowDefinitions="*,Auto" ColumnDefinitions="*,Auto">
+    <Grid Padding="10" RowDefinitions="*,Auto" ColumnDefinitions="*,Auto" BackgroundColor="LightGray">
         <!-- Message List -->
-        <CollectionView Grid.Row="0" 
-                        Grid.ColumnSpan="2"
-                        ItemsSource="{Binding MessageEntries}"
-                        BackgroundColor="White"
-                        VerticalScrollBarVisibility="Always">
+        <CollectionView 
+            Grid.Row="0" 
+            Grid.ColumnSpan="2"
+            ItemsSource="{Binding MessageEntries}"
+            BackgroundColor="LightGray"
+            VerticalScrollBarVisibility="Default"
+            ItemsUpdatingScrollMode="KeepLastItemInView"
+            >
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <StackLayout Orientation="Horizontal" Padding="5">
-                        <Label Text="{Binding Message}"
-                               Padding="10"
-                               HorizontalTextAlignment="Start">
-                            <Label.Triggers>
-                                <DataTrigger TargetType="Label"
-                                             Binding="{Binding Source}"
-                                             Value="User">
+                    <StackLayout Orientation="Horizontal" Padding="0">
+                        <Frame 
+                            CornerRadius="10" 
+                            HasShadow="False" 
+                            Padding="0"
+                            Margin="2"
+                            BorderColor="Transparent"
+                            >
+                            <Frame.Triggers>
+                                <DataTrigger 
+                                    TargetType="Frame"
+                                    Binding="{Binding Source}"
+                                    Value="User"
+                                    >
                                     <Setter Property="BackgroundColor" Value="LightBlue" />
-                                    <Setter Property="TextColor" Value="Black" />
+                                    <Setter Property="HorizontalOptions" Value="End" />
                                 </DataTrigger>
-                                <DataTrigger TargetType="Label"
-                                             Binding="{Binding Source}"
-                                             Value="LLM">
+                                <DataTrigger 
+                                    TargetType="Frame"
+                                    Binding="{Binding Source}"
+                                    Value="LLM"
+                                    >
                                     <Setter Property="BackgroundColor" Value="LightGreen" />
-                                    <Setter Property="TextColor" Value="Black" />
+                                    <Setter Property="HorizontalOptions" Value="Start" />
                                 </DataTrigger>
-                            </Label.Triggers>
-                        </Label>
+                            </Frame.Triggers>
+                            <Label 
+                                Text="{Binding Message}"
+                                Padding="10"
+                                TextColor="Black"
+                                >
+                            </Label>
+                        </Frame>
                     </StackLayout>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
 
         <!-- Input Entry -->
-        <Entry Grid.Row="1" Grid.Column="0"
-               Text="{Binding UserMessage}" 
-               Placeholder="Type your message here" 
-               HorizontalOptions="FillAndExpand"
-               VerticalOptions="Center"
-               Completed="OnEntryCompleted" />
+        <Entry 
+            Grid.Row="1" Grid.Column="0"
+            Text="{Binding UserMessage}" 
+            Margin="0,2,2,2"
+            Placeholder="Type your message here" 
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="Center"
+            Completed="OnEntryCompleted"
+            BackgroundColor="White"
+            />
 
         <!-- Send Button -->
-        <Button Grid.Row="1" Grid.Column="1"
-                Text="Send"
-                Command="{Binding SendMessageCommand}"
-                WidthRequest="80"
-                HorizontalOptions="End"
-                VerticalOptions="Center" />
+        <Button 
+            Grid.Row="1" Grid.Column="1"
+            Text="Send"
+            Margin="10,2,2,2"
+            Command="{Binding SendMessageCommand}"
+            WidthRequest="80"
+            HorizontalOptions="End"
+            VerticalOptions="Center" 
+            />
+        
     </Grid>
 </ContentPage>
