@@ -54,13 +54,14 @@ internal class ChatViewModel : INotifyPropertyChanged {
             UserMessage = string.Empty; 
 
             var response = await _openAIService.SendMessage(submissionText, string.Empty);
-            PromptSent?.Invoke(this, new EventArgs());
 
             MessageEntries.Add(new MessageEntry {
                 Message = response.Content,
                 Source = MessageSource.LLM
             });
         }
+
+        PromptSent?.Invoke(this, new EventArgs());
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;

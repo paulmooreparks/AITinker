@@ -8,14 +8,16 @@
     Title="AI Tinker"
     >
 
-    <Grid Padding="10" RowDefinitions="*,Auto" BackgroundColor="LightGray">
-        <!-- Message List -->
+    <Grid Padding="0" RowDefinitions="*,Auto" ColumnDefinitions="3*,1*" BackgroundColor="LightGray">
+        <!-- Chat Area -->
         <CollectionView
             Grid.Row="0"
+            Grid.Column="0"
             ItemsSource="{Binding MessageEntries}"
             BackgroundColor="LightGray"
             VerticalScrollBarVisibility="Default"
             ItemsUpdatingScrollMode="KeepLastItemInView"
+            Margin="0, 10, 10, 10"
             >
 
             <CollectionView.ItemTemplate>
@@ -23,7 +25,7 @@
                     <Grid ColumnDefinitions="*,Auto" Padding="0">
                         <Editor
                             Text="{Binding Message}"
-                            Margin="4,4,18,4"
+                            Margin="10,4,18,4"
                             TextColor="Black"
                             HorizontalOptions="StartAndExpand"
                             VerticalOptions="Center"
@@ -52,16 +54,18 @@
             </CollectionView.ItemTemplate>
         </CollectionView>
 
+        <!-- Prompt Entry -->
         <Editor
             x:Name="PromptEditor"
             Grid.Row="1"
+            Grid.Column="0"
             Text="{Binding UserMessage}"
-            Margin="0,2,90,2"
+            Margin="10,2,100,10"
             Placeholder="Type your prompt here"
             HorizontalOptions="FillAndExpand"
             BackgroundColor="White"
             VerticalOptions="EndAndExpand"
-            VerticalTextAlignment="End"
+            VerticalTextAlignment="Center"
             AutoSize="TextChanges"
             >
             <Editor.Shadow>
@@ -69,15 +73,17 @@
                     Brush="Black"
                     Offset="0,0"
                     Opacity=".9"
-                    Radius="2"
+                    Radius="3"
                     />
             </Editor.Shadow>
         </Editor>
 
+        <!-- Send Button -->
         <Button
             Grid.Row="1"
+            Grid.Column="0"
             Text="Send"
-            Margin="10,2,2,2"
+            Margin="10,2,10,10"
             Command="{Binding SendMessageCommand}"
             WidthRequest="80"
             HorizontalOptions="End"
@@ -88,10 +94,29 @@
                     Brush="Black"
                     Offset="0,0"
                     Opacity=".9"
-                    Radius="2"
+                    Radius="3"
                     />
             </Button.Shadow>
-
         </Button>
+        
+        <!-- Properties Pane -->
+        <StackLayout x:Name="PropertyPane" Grid.RowSpan="2" Grid.Column="1" BackgroundColor="White" Padding="10">
+            <Label Text="Model:" />
+            <Entry Text="{Binding SelectedItem.Name}" />
+            <Label Text="Role:" />
+            <Entry Text="{Binding SelectedItem.Age}" Keyboard="Numeric" />
+            <Label Text="System content:" />
+            <Entry Text="{Binding SelectedItem.Address}" />
+            <!-- Add more properties as needed -->
+            <StackLayout.Shadow>
+                <Shadow
+                    Brush="Black"
+                    Offset="0,0"
+                    Opacity=".9"
+                    Radius="3"
+                    />
+            </StackLayout.Shadow>
+        </StackLayout>
+
     </Grid>
 </ContentPage>
