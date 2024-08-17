@@ -14,7 +14,6 @@ namespace AITinker.ViewModels;
 internal class ChatViewModel : INotifyPropertyChanged {
     private OpenAI.Services.OpenAIService? _openAIService;
     private string? _userMessage;
-    private string? _llmResponse;
 
     public ObservableCollection<MessageEntry> MessageEntries { get; private set; }
 
@@ -22,14 +21,6 @@ internal class ChatViewModel : INotifyPropertyChanged {
         get => _userMessage ?? string.Empty;
         set {
             _userMessage = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public string LLMResponse {
-        get => _llmResponse ?? string.Empty;
-        set {
-            _llmResponse = value;
             OnPropertyChanged();
         }
     }
@@ -45,12 +36,15 @@ internal class ChatViewModel : INotifyPropertyChanged {
         _openAIService = openAIService;
     }
 
+    public event EventHandler? PromptSent;
+
     private async Task SendMessage() {
         if (_openAIService == null) {
             throw new InvalidOperationException("OpenAIService is not initialized.");
         }
 
         if (!string.IsNullOrEmpty(UserMessage)) {
+
             MessageEntries.Add(new MessageEntry {
                 Message = UserMessage,
                 Source = MessageSource.User
@@ -60,7 +54,7 @@ internal class ChatViewModel : INotifyPropertyChanged {
             UserMessage = string.Empty; 
 
             var response = await _openAIService.SendMessage(submissionText, string.Empty);
-            LLMResponse = response.Content;
+            PromptSent?.Invoke(this, new EventArgs());
 
             MessageEntries.Add(new MessageEntry {
                 Message = response.Content,

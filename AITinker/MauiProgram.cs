@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 
 using AITinker.OpenAI.Extensions;
 using AITinker.ViewModels;
+using Microsoft.Maui.LifecycleEvents;
 
 
 namespace AITinker;
@@ -23,9 +24,21 @@ public static class MauiProgram {
             .ConfigureFonts(fonts => {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+            })
+            .ConfigureLifecycleEvents(events => {
+#if WINDOWS
+                events.AddWindows(windows =>
+                {
+                    windows.OnWindowCreated(window =>
+                    {
+                        window.ExtendsContentIntoTitleBar = false;
+                        window.Title = "AI Tinker";
+                    });
+                });
+#endif            
             });
 
-        builder.Services.AddSingleton<IConfiguration>(configuration);
+                builder.Services.AddSingleton<IConfiguration>(configuration);
         builder.Services.AddSingleton<IFileProvider>(AITinker.Core.Configuration.FileProvider);
         builder.Services.AddOpenAIServices(configuration);
         builder.Services.AddSingleton<OpenAI.Services.OpenAIService>();

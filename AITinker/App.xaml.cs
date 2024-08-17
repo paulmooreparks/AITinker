@@ -16,4 +16,13 @@ public partial class App : Application {
 
         MainPage = new Views.ChatPage() { BindingContext = chatViewModel };
     }
+
+    protected override Window CreateWindow(IActivationState? activationState) {
+        var window = base.CreateWindow(activationState);
+        if (DeviceInfo.Current.Platform == DevicePlatform.WinUI) {
+            window.Title = "AI Tinker"; // System.Reflection.Assembly.GetEntryAssembly()?.GetName().Name;
+        }
+
+        return window;
+    }
 }
