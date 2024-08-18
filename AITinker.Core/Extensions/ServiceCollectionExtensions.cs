@@ -31,7 +31,7 @@ public static class ServiceCollectionExtensions {
                 .Where(m => m.GetCustomAttribute<RegisterServicesAttribute>() != null);
 
             foreach (var method in methods) {
-                method.Invoke(null, new object[] { services, configuration });
+                method.Invoke(null, [services, configuration]);
             }
         }
 
@@ -42,7 +42,7 @@ public static class ServiceCollectionExtensions {
     public static void ConfigureWritable<T>(
         this IServiceCollection services,
         IConfigurationSection section,
-        string file = "appsettings.json",
+        string file = AITinker.Core.Configuration.ConfigFileName,
         IFileProvider? fileProvider = null,
         string? appDirectory = null) where T : class, new() 
     {

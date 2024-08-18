@@ -10,8 +10,8 @@ using Newtonsoft.Json.Linq;
 namespace AITinker.Core;
 
 public static class Configuration {
-    private const string _appDirectoryName = ".aitinker";
-    private const string _configFileName = "appsettings.json";
+    public const string AppDirectoryName = ".aitinker";
+    public const string ConfigFileName = "appsettings.json";
 
     private static readonly string _appDirectory;
     private static readonly string _configFilePath;
@@ -36,8 +36,6 @@ public static class Configuration {
         }
     }
 
-    public static string AppDirectoryName => _appDirectoryName;
-    public static string ConfigFileName => _configFileName;
     public static string AppDirectory => _appDirectory; 
     public static string ConfigFilePath => _configFilePath;
     public static IFileProvider FileProvider => _fileProvider;

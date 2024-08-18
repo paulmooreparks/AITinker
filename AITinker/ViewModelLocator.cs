@@ -8,5 +8,5 @@ using AITinker.ViewModels;
 
 namespace AITinker;
 internal class ViewModelLocator {
-    public ChatViewModel ChatViewModel => App.ServiceProvider.GetRequiredService<ChatViewModel>();
+    public ChatViewModel ChatViewModel => App.ServiceProvider!.GetRequiredService<ChatViewModel>();
 }

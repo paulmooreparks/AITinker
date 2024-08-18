@@ -102,11 +102,23 @@
         <!-- Properties Pane -->
         <StackLayout x:Name="PropertyPane" Grid.RowSpan="2" Grid.Column="1" BackgroundColor="White" Padding="10">
             <Label Text="Model:" />
-            <Entry Text="{Binding SelectedItem.Name}" />
-            <Label Text="Role:" />
-            <Entry Text="{Binding SelectedItem.Age}" Keyboard="Numeric" />
+            <Entry Text="{Binding Model}" />
+            <Label Text="Temperature:" />
+            <Entry Text="{Binding Temperature}" Keyboard="Numeric" />
             <Label Text="System content:" />
-            <Entry Text="{Binding SelectedItem.Address}" />
+            <Editor Text="{Binding SystemContent}" VerticalOptions="Fill" />
+            <Label Text="Api Key:" />
+            <Entry 
+                Text="{Binding ApiKeyDisplay}" 
+                IsReadOnly="True"
+                IsEnabled="False"
+                />
+            <!--               
+                Focused="Entry_Focused"
+                Unfocused="Entry_Unfocused"
+                Placeholder="Enter API Key"
+                IsReadOnly="{Binding IsEditingApiKey, Converter={StaticResource InverseBooleanConverter}}"
+            -->
             <!-- Add more properties as needed -->
             <StackLayout.Shadow>
                 <Shadow

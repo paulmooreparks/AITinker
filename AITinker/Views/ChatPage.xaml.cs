@@ -23,5 +23,17 @@ public partial class ChatPage : ContentPage {
             viewModel.SendMessageCommand.Execute(null);
         }
     }
+
+    private void Entry_Focused(object sender, FocusEventArgs e) {
+        if (BindingContext is ChatViewModel viewModel) {
+            viewModel.IsEditingApiKey = true;
+        }
+    }
+
+    private void Entry_Unfocused(object sender, FocusEventArgs e) {
+        if (BindingContext is ChatViewModel viewModel) {
+            viewModel.IsEditingApiKey = false;
+        }
+    }
 }
 

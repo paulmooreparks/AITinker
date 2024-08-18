@@ -14,7 +14,7 @@ public static class ServiceCollectionExtensions {
     [RegisterServices]
     public static IServiceCollection AddOpenAIServices(this IServiceCollection services, IConfiguration configuration) {
         var openAIConfig = configuration.GetSection(_key).Get<OpenAIConfig>();
-        services.ConfigureWritable<OpenAIConfig>(configuration.GetSection(_key), "appsettings.json");
+        services.ConfigureWritable<OpenAIConfig>(configuration.GetSection(_key), AITinker.Core.Configuration.ConfigFileName);
 
         if (openAIConfig is null) {
             openAIConfig = new OpenAIConfig();

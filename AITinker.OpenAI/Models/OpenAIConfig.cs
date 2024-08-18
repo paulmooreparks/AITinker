@@ -11,10 +11,11 @@ public class OpenAIConfig {
         public string? ApiKey { get; set; }
         public string? ApiUrl { get; set; }
         public string? Model { get; set; }
+        public string? SystemContent { get; set; }
+        public double? Temperature { get; set; }
     }
 
     public class OptionsModel {
-        public string[]? ApiKey { get; set; }
         public string[]? ApiUrl { get; set; }
         public string[]? Model { get; set; }
     }
