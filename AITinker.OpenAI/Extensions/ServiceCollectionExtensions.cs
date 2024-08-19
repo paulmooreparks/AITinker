@@ -9,7 +9,7 @@ using AITinker.OpenAI.Services;
 namespace AITinker.OpenAI.Extensions;
 
 public static class ServiceCollectionExtensions {
-    private const string _key = "LLMConfig:OpenAI";
+    private const string _key = "Kits:OpenAI";
 
     [RegisterServices]
     public static IServiceCollection AddOpenAIServices(this IServiceCollection services, IConfiguration configuration) {

@@ -50,7 +50,7 @@ internal class ChatViewModel : INotifyPropertyChanged {
             if (ApiKey.Length <= 12)
                 return ApiKey; // Do not obscure if the key is too short
 
-            return $"{ApiKey[..6]}...{ApiKey[^6..]}";
+            return $"{ApiKey[..3]}...{ApiKey[^4..]}";
         }
     }
 
