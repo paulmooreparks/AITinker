@@ -11,6 +11,9 @@ using AITinker.Core.Services;
 namespace AITinker.Core.Extensions;
 
 public static class ServiceCollectionExtensions {
+    private const string _configurationsKey = "Configurations";
+    private const string _kitsKey = "Kits";
+
     public static IServiceCollection AddLLMServices(this IServiceCollection services, IConfiguration configuration, Assembly assembly) {
         if (services is null) {
             throw new ArgumentNullException(nameof(services));
@@ -34,6 +37,9 @@ public static class ServiceCollectionExtensions {
                 method.Invoke(null, [services, configuration]);
             }
         }
+
+        // services.ConfigureWritable<Configurations>(configuration.GetSection(_configurationsKey), AITinker.Core.Configuration.ConfigFileName);
+        // services.ConfigureWritable<Kits>(configuration.GetSection(_kitsKey), AITinker.Core.Configuration.ConfigFileName);
 
         return services;
     }

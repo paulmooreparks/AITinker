@@ -15,7 +15,7 @@
             Grid.Column="0"
             ItemsSource="{Binding MessageEntries}"
             BackgroundColor="LightGray"
-            VerticalScrollBarVisibility="Default"
+            VerticalScrollBarVisibility="Always"
             ItemsUpdatingScrollMode="KeepLastItemInView"
             Margin="0, 10, 10, 10"
             >
@@ -27,10 +27,9 @@
                             Text="{Binding Message}"
                             Margin="10,4,18,4"
                             TextColor="Black"
-                            HorizontalOptions="StartAndExpand"
-                            VerticalOptions="Center"
-                            WidthRequest="{Binding RelativeWidth}"
                             IsReadOnly="True"
+                            VerticalTextAlignment="Start"
+                            VerticalOptions="Fill"
                             >
                             <Editor.Triggers>
                                 <DataTrigger
@@ -64,7 +63,7 @@
             Placeholder="Type your prompt here"
             HorizontalOptions="FillAndExpand"
             BackgroundColor="White"
-            VerticalOptions="EndAndExpand"
+            VerticalOptions="FillAndExpand"
             VerticalTextAlignment="Center"
             AutoSize="TextChanges"
             >
