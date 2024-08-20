@@ -18,6 +18,7 @@ internal class ChatViewModel : INotifyPropertyChanged {
     private string? _userMessage;
     private bool _isEditingApiKey;
     private Configurations? _configurations;
+    private string _selectedConfiguration;
 
     public ObservableCollection<MessageEntry> MessageEntries { get; private set; }
 
@@ -32,6 +33,16 @@ internal class ChatViewModel : INotifyPropertyChanged {
     public IEnumerable<string> ConfigurationNames {
         get {
             return _configurations!.Table!.Keys.ToList();
+        }
+    }
+
+    public string SelectedConfiguration {
+        get => _selectedConfiguration ?? string.Empty;
+        set {
+            if (_selectedConfiguration != value) {
+                _selectedConfiguration = value;
+                OnPropertyChanged();
+            }
         }
     }
 
@@ -131,11 +142,13 @@ internal class ChatViewModel : INotifyPropertyChanged {
         StartEditApiKeyCommand = new Command(() => IsEditingApiKey = true);
         FinishEditApiKeyCommand = new Command(() => IsEditingApiKey = false);
         MessageEntries = new ObservableCollection<MessageEntry>();
+        _selectedConfiguration = string.Empty;
     }
 
     public void SetServices(Configurations configurations, OpenAI.Services.OpenAIService openAIService) {
         _configurations = configurations;
         _openAIService = openAIService;
+        _selectedConfiguration = ConfigurationNames.FirstOrDefault() ?? string.Empty;
     }
 
     public event EventHandler? PromptSent;
