@@ -114,8 +114,10 @@
             <Label Text="Api Key:" />
             <Entry 
                 Text="{Binding ApiKeyDisplay}" 
-                IsReadOnly="True"
-                IsEnabled="False"
+                IsReadOnly="{Binding IsEditingApiKey, Converter={StaticResource InverseBooleanConverter}}"
+                Focused="Entry_Focused"
+                Unfocused="Entry_Unfocused"
+                Placeholder="Enter API Key"
                 />
             <!--               
                 Focused="Entry_Focused"

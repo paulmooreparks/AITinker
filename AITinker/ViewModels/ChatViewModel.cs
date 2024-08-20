@@ -47,6 +47,12 @@ internal class ChatViewModel : INotifyPropertyChanged {
             if (_selectedConfiguration != value) {
                 _selectedConfiguration = value;
                 _settings = _configuration?.GetSection($"Configurations:{_selectedConfiguration}:Settings").Get<OpenAISettings>();
+
+                if (_settings is null) {
+                    _settings = new OpenAISettings();
+                    _configuration?.GetSection($"Configurations:{_selectedConfiguration}:Settings").Bind(_settings);
+                }
+
                 OnPropertyChanged(string.Empty);
             }
         }
@@ -60,22 +66,40 @@ internal class ChatViewModel : INotifyPropertyChanged {
             if (_settings != null) {
                 _settings.ApiKey = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(ApiKeyDisplay));
+
+                if (_openAIService != null) {
+                    _openAIService.ApiKey = value;
+                }
             }
         }
     }
 
     public string ApiKeyDisplay {
         get {
-            if (_isEditingApiKey)
-                return ApiKey;  // Show full key while editing
+            if (_isEditingApiKey) {
+                return string.Empty;  // Show empty string while editing
+            }
 
-            if (string.IsNullOrEmpty(ApiKey))
+            if (string.IsNullOrEmpty(_settings?.ApiKey)) {
                 return string.Empty;
+            }
 
-            if (ApiKey.Length <= 12)
-                return ApiKey; // Do not obscure if the key is too short
+            if (ApiKey.Length <= 7) {
+                return "...";
+            }
 
-            return $"{ApiKey[..3]}...{ApiKey[^4..]}";
+            return $"{_settings.ApiKey[..3]}...{_settings.ApiKey[^4..]}";
+        }
+        set {
+            if (_isEditingApiKey && _settings is not null && !string.IsNullOrEmpty(value)) {
+                _settings.ApiKey = value;
+                OnPropertyChanged(nameof(ApiKey));
+
+                if (_openAIService != null) {
+                    _openAIService.ApiKey = value;
+                }
+            }
         }
     }
 
@@ -87,6 +111,10 @@ internal class ChatViewModel : INotifyPropertyChanged {
             if (_settings != null) {
                 _settings.ApiUrl = value;
                 OnPropertyChanged();
+
+                if (_openAIService != null) {
+                    _openAIService.ApiUrl = value;
+                }
             }
         }
     }
@@ -99,6 +127,10 @@ internal class ChatViewModel : INotifyPropertyChanged {
             if (_settings != null) {
                 _settings.Model = value;
                 OnPropertyChanged();
+
+                if (_openAIService != null) {
+                    _openAIService.Model = value;
+                }
             }
         }
     }
@@ -111,6 +143,10 @@ internal class ChatViewModel : INotifyPropertyChanged {
             if (_settings != null) {
                 _settings.SystemContent = value;
                 OnPropertyChanged();
+
+                if (_openAIService != null) {
+                    _openAIService.SystemContent = value;
+                }
             }
         }
     }
@@ -123,6 +159,10 @@ internal class ChatViewModel : INotifyPropertyChanged {
             if (_settings != null) {
                 _settings.Temperature = value;
                 OnPropertyChanged();
+
+                if (_openAIService != null) {
+                    _openAIService.Temperature = value;
+                }
             }
         }
     }
@@ -156,6 +196,13 @@ internal class ChatViewModel : INotifyPropertyChanged {
         _configurations = configurations;
         _openAIService = openAIService;
         SelectedConfiguration = ConfigurationNames.FirstOrDefault() ?? string.Empty;
+
+        _settings = _configuration?.GetSection($"Configurations:{SelectedConfiguration}:Settings").Get<OpenAISettings>();
+
+        if (_settings is null) {
+            _settings = new OpenAISettings();
+            _configuration?.GetSection($"Configurations:{SelectedConfiguration}:Settings").Bind(_settings);
+        }
     }
 
     public event EventHandler? PromptSent;
@@ -173,14 +220,24 @@ internal class ChatViewModel : INotifyPropertyChanged {
             });
 
             var submissionText = UserMessage;
-            UserMessage = string.Empty; 
+            UserMessage = string.Empty;
 
-            var response = await _openAIService.SendMessage(submissionText, string.Empty);
+            LLMResponse response = new LLMResponse();
 
-            MessageEntries.Add(new MessageEntry {
-                Message = response.Content,
-                Source = MessageSource.LLM
-            });
+            try { 
+                response = await _openAIService.SendMessage(submissionText, string.Empty);
+
+                MessageEntries.Add(new MessageEntry {
+                    Message = response.Content,
+                    Source = MessageSource.LLM
+                });
+            } 
+            catch (Exception ex) {
+                MessageEntries.Add(new MessageEntry {
+                    Message = ex.Message,
+                    Source = MessageSource.LLM
+                });
+            }
         }
 
         PromptSent?.Invoke(this, new EventArgs());

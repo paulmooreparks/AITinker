@@ -21,6 +21,7 @@ public class OpenAIService : ILLMService {
         } 
         set {
             _config.Value.ApiKey = value;
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _config.Value.ApiKey);
         }
     }
 
@@ -137,7 +138,7 @@ public class OpenAIService : ILLMService {
             return llmResponse;
         }
         else {
-            throw new Exception($"Error: {response.StatusCode}, {await response.Content.ReadAsStringAsync()}");
+            throw new Exception($"Error: {response.StatusCode}, Response:{Environment.NewLine}{await response.Content.ReadAsStringAsync()}");
         }
     }
 }
