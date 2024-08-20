@@ -46,6 +46,13 @@
                                     <Setter Property="BackgroundColor" Value="FloralWhite" />
                                     <Setter Property="HorizontalOptions" Value="StartAndExpand" />
                                 </DataTrigger>
+                                <DataTrigger
+                                    TargetType="Editor"
+                                    Binding="{Binding Source}"
+                                    Value="LLMError">
+                                    <Setter Property="BackgroundColor" Value="PaleVioletRed" />
+                                    <Setter Property="HorizontalOptions" Value="StartAndExpand" />
+                                </DataTrigger>
                             </Editor.Triggers>
                         </Editor>
                     </Grid>

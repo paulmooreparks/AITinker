@@ -12,5 +12,6 @@ internal class MessageEntry {
 
 internal enum MessageSource {
     User,
-    LLM
+    LLM,
+    LLMError
 }

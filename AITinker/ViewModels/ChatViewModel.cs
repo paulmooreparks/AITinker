@@ -53,6 +53,14 @@ internal class ChatViewModel : INotifyPropertyChanged {
                     _configuration?.GetSection($"Configurations:{_selectedConfiguration}:Settings").Bind(_settings);
                 }
 
+                if (_openAIService is not null) {
+                    _openAIService.ApiKey = ApiKey;
+                    _openAIService.ApiUrl = ApiUrl;
+                    _openAIService.Model = Model;
+                    _openAIService.SystemContent = SystemContent;
+                    _openAIService.Temperature = Temperature;
+                }
+
                 OnPropertyChanged(string.Empty);
             }
         }
@@ -235,7 +243,7 @@ internal class ChatViewModel : INotifyPropertyChanged {
             catch (Exception ex) {
                 MessageEntries.Add(new MessageEntry {
                     Message = ex.Message,
-                    Source = MessageSource.LLM
+                    Source = MessageSource.LLMError
                 });
             }
         }
