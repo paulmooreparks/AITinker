@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
+using AITinker.Core.Models;
 using AITinker.Models;
 
 namespace AITinker.ViewModels;
@@ -16,6 +17,7 @@ internal class ChatViewModel : INotifyPropertyChanged {
     private OpenAI.Services.OpenAIService? _openAIService;
     private string? _userMessage;
     private bool _isEditingApiKey;
+    private Configurations? _configurations;
 
     public ObservableCollection<MessageEntry> MessageEntries { get; private set; }
 
@@ -24,6 +26,12 @@ internal class ChatViewModel : INotifyPropertyChanged {
         set {
             _userMessage = value;
             OnPropertyChanged();
+        }
+    }
+
+    public IEnumerable<string> ConfigurationNames {
+        get {
+            return _configurations!.Table!.Keys.ToList();
         }
     }
 
@@ -125,7 +133,8 @@ internal class ChatViewModel : INotifyPropertyChanged {
         MessageEntries = new ObservableCollection<MessageEntry>();
     }
 
-    public void SetOpenAIService(OpenAI.Services.OpenAIService openAIService) {
+    public void SetServices(Configurations configurations, OpenAI.Services.OpenAIService openAIService) {
+        _configurations = configurations;
         _openAIService = openAIService;
     }
 

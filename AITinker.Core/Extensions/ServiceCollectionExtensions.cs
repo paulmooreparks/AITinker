@@ -6,6 +6,7 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 
 using AITinker.Core.Attributes;
+using AITinker.Core.Models;
 using AITinker.Core.Services;
 
 namespace AITinker.Core.Extensions;
@@ -14,7 +15,7 @@ public static class ServiceCollectionExtensions {
     private const string _configurationsKey = "Configurations";
     private const string _kitsKey = "Kits";
 
-    public static IServiceCollection AddLLMServices(this IServiceCollection services, IConfiguration configuration, Assembly assembly) {
+    public static IServiceCollection AddLLMServices(this IServiceCollection services, IConfiguration configuration) {
         if (services is null) {
             throw new ArgumentNullException(nameof(services));
         }
@@ -23,23 +24,26 @@ public static class ServiceCollectionExtensions {
             throw new ArgumentNullException(nameof(services));
         }
 
-        if (assembly is null) {
-            throw new ArgumentNullException(nameof(assembly));
-        }
+        var configurationsSection = configuration.GetSection(_configurationsKey);
+        var configurationsDict = new Dictionary<string, KitConfiguration>();
 
-        var types = assembly.GetTypes();
-
-        foreach (var type in types) {
-            var methods = type.GetMethods(BindingFlags.Static | BindingFlags.Public)
-                .Where(m => m.GetCustomAttribute<RegisterServicesAttribute>() != null);
-
-            foreach (var method in methods) {
-                method.Invoke(null, [services, configuration]);
+        foreach (var child in configurationsSection.GetChildren()) {
+            var config = child.Get<KitConfiguration>();
+            if (config != null) {
+                configurationsDict.Add(child.Key, config);
             }
         }
 
-        // services.ConfigureWritable<Configurations>(configuration.GetSection(_configurationsKey), AITinker.Core.Configuration.ConfigFileName);
-        // services.ConfigureWritable<Kits>(configuration.GetSection(_kitsKey), AITinker.Core.Configuration.ConfigFileName);
+        var aitConfigurations = new Configurations {
+            Table = configurationsDict
+        };
+
+        if (aitConfigurations is not null) {
+            services.AddSingleton<Configurations>(aitConfigurations);
+        }
+
+        services.ConfigureWritable<Configurations>(configuration.GetSection(_configurationsKey), AITinker.Core.Configuration.ConfigFileName);
+        // services.ConfigureWritable<Kits>(configuration.GetSection(_kitsKey), AITinker.Core.KitConfiguration.ConfigFileName);
 
         return services;
     }

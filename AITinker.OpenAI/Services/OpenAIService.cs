@@ -11,61 +11,56 @@ using AITinker.OpenAI.Models;
 namespace AITinker.OpenAI.Services;
 
 public class OpenAIService : ILLMService {
-    private readonly IWriteableSection<OpenAIConfig> _config;
+    private readonly IWriteableSection<OpenAISettings> _config;
     private readonly HttpClient _httpClient;
 
     public string ApiKey { 
         get {
-            return _config?.Value.Settings?.ApiKey ?? string.Empty;
+            return _config?.Value.ApiKey ?? string.Empty;
         } 
         set {
-            _config.Value.Settings!.ApiKey = value;
+            _config.Value.ApiKey = value;
         }
     }
 
     public string ApiUrl {
         get {
-            return _config.Value.Settings!?.ApiUrl ?? "https://api.openai.com/v1/chat/completions";
+            return _config.Value?.ApiUrl ?? "https://api.openai.com/v1/chat/completions";
         }
         set {
-            _config.Value.Settings!.ApiUrl = value;
+            _config.Value.ApiUrl = value;
         }
     }
 
     public string Model {
         get {
-            return _config.Value.Settings?.Model ?? "gpt-4o-mini";
+            return _config.Value?.Model ?? "gpt-4o-mini";
         }
         set {
-            _config.Value.Settings!.Model = value;
+            _config.Value.Model = value;
         }
     }
 
     public string SystemContent {
         get {
-            return _config.Value.Settings?.SystemContent ?? "You are a helpful assistant.";
+            return _config.Value?.SystemContent ?? "You are a helpful assistant.";
         }
         set {
-            _config.Value.Settings!.SystemContent = value;
+            _config.Value.SystemContent = value;
         }
     }
 
     public double Temperature {
         get {
-            return _config.Value.Settings?.Temperature ?? 0.5;
+            return _config.Value?.Temperature ?? 0.5;
         }
         set {
-            _config.Value.Settings!.Temperature = value;
+            _config.Value.Temperature = value;
         }
     }
 
-    public OpenAIService(IWriteableSection<OpenAIConfig> config) {
+    public OpenAIService(IWriteableSection<OpenAISettings> config) {
         _config = config;
-
-        if (_config.Value.Settings is null) {
-            _config.Value.Settings = new OpenAIConfig.SettingsModel();
-        }
-
         _httpClient = new HttpClient();
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApiKey);
     }

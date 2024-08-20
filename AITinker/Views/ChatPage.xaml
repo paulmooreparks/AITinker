@@ -100,6 +100,7 @@
         
         <!-- Properties Pane -->
         <StackLayout x:Name="PropertyPane" Grid.RowSpan="2" Grid.Column="1" BackgroundColor="White" Padding="10">
+            <Picker Title="Configuration:" ItemsSource="{Binding ConfigurationNames}" />
             <Label Text="Model:" />
             <Entry Text="{Binding Model}" />
             <Label Text="Temperature:" />

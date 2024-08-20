@@ -6,6 +6,7 @@ using Microsoft.Extensions.FileProviders;
 
 using AITinker.Cli.Services;
 using AITinker.OpenAI.Extensions;
+using AITinker.Core.Extensions;
 
 namespace AITinker.Cli;
 
@@ -24,6 +25,7 @@ internal class AitProgram {
         clifferBuilder.ConfigureServices((services) => {
             services.AddSingleton<IConfiguration>(configuration);
             services.AddSingleton<IFileProvider>(AITinker.Core.Configuration.FileProvider);
+            services.AddLLMServices(configuration);
             services.AddOpenAIServices(configuration);
         });
 

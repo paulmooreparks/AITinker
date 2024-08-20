@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using AITinker.OpenAI.Extensions;
 using AITinker.ViewModels;
 using Microsoft.Maui.LifecycleEvents;
+using AITinker.Core.Extensions;
 
 
 namespace AITinker;
@@ -40,6 +41,7 @@ public static class MauiProgram {
 
                 builder.Services.AddSingleton<IConfiguration>(configuration);
         builder.Services.AddSingleton<IFileProvider>(AITinker.Core.Configuration.FileProvider);
+        builder.Services.AddLLMServices(configuration);
         builder.Services.AddOpenAIServices(configuration);
         builder.Services.AddSingleton<OpenAI.Services.OpenAIService>();
         builder.Services.AddSingleton<ChatViewModel>();
