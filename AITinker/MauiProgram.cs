@@ -39,7 +39,7 @@ public static class MauiProgram {
 #endif            
             });
 
-                builder.Services.AddSingleton<IConfiguration>(configuration);
+        builder.Services.AddSingleton<IConfiguration>(configuration);
         builder.Services.AddSingleton<IFileProvider>(AITinker.Core.Configuration.FileProvider);
         builder.Services.AddLLMServices(configuration);
         builder.Services.AddOpenAIServices(configuration);

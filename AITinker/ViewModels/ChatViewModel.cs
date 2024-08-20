@@ -10,10 +10,15 @@ using System.Windows.Input;
 
 using AITinker.Core.Models;
 using AITinker.Models;
+using AITinker.OpenAI.Models;
+
+using Microsoft.Extensions.Configuration;
 
 namespace AITinker.ViewModels;
 
 internal class ChatViewModel : INotifyPropertyChanged {
+    private IConfiguration? _configuration;
+    private OpenAISettings? _settings;
     private OpenAI.Services.OpenAIService? _openAIService;
     private string? _userMessage;
     private bool _isEditingApiKey;
@@ -41,18 +46,19 @@ internal class ChatViewModel : INotifyPropertyChanged {
         set {
             if (_selectedConfiguration != value) {
                 _selectedConfiguration = value;
-                OnPropertyChanged();
+                _settings = _configuration?.GetSection($"Configurations:{_selectedConfiguration}:Settings").Get<OpenAISettings>();
+                OnPropertyChanged(string.Empty);
             }
         }
     }
 
     public string ApiKey {
         get {
-            return _openAIService?.ApiKey ?? string.Empty;
+            return _settings?.ApiKey ?? _openAIService?.ApiKey ?? string.Empty;
         }
         set {
-            if (_openAIService != null) {
-                _openAIService.ApiKey = value;
+            if (_settings != null) {
+                _settings.ApiKey = value;
                 OnPropertyChanged();
             }
         }
@@ -75,11 +81,11 @@ internal class ChatViewModel : INotifyPropertyChanged {
 
     public string ApiUrl {
         get {
-            return _openAIService?.ApiUrl ?? string.Empty;
+            return _settings?.ApiUrl ?? _openAIService?.ApiUrl ?? string.Empty;
         }
         set {
-            if (_openAIService != null) {
-                _openAIService.ApiUrl = value;
+            if (_settings != null) {
+                _settings.ApiUrl = value;
                 OnPropertyChanged();
             }
         }
@@ -87,11 +93,11 @@ internal class ChatViewModel : INotifyPropertyChanged {
 
     public string Model {
         get {
-            return _openAIService?.Model ?? string.Empty;
+            return _settings?.Model ?? _openAIService?.Model ?? string.Empty;
         }
         set {
-            if (_openAIService != null) {
-                _openAIService.Model = value;
+            if (_settings != null) {
+                _settings.Model = value;
                 OnPropertyChanged();
             }
         }
@@ -99,11 +105,11 @@ internal class ChatViewModel : INotifyPropertyChanged {
 
     public string SystemContent {
         get {
-            return _openAIService?.SystemContent ?? string.Empty;
+            return _settings?.SystemContent ?? _openAIService?.SystemContent ?? string.Empty;
         }
         set {
-            if (_openAIService != null) {
-                _openAIService.SystemContent = value;
+            if (_settings != null) {
+                _settings.SystemContent = value;
                 OnPropertyChanged();
             }
         }
@@ -111,11 +117,11 @@ internal class ChatViewModel : INotifyPropertyChanged {
 
     public double Temperature {
         get {
-            return _openAIService?.Temperature ?? 0.5;
+            return _settings?.Temperature ?? _openAIService?.Temperature ?? 0.5;
         }
         set {
-            if (_openAIService != null) {
-                _openAIService.Temperature = value;
+            if (_settings != null) {
+                _settings.Temperature = value;
                 OnPropertyChanged();
             }
         }
@@ -145,10 +151,11 @@ internal class ChatViewModel : INotifyPropertyChanged {
         _selectedConfiguration = string.Empty;
     }
 
-    public void SetServices(Configurations configurations, OpenAI.Services.OpenAIService openAIService) {
+    public void SetServices(IConfiguration configuration, Configurations configurations, OpenAI.Services.OpenAIService openAIService) {
+        _configuration = configuration;
         _configurations = configurations;
         _openAIService = openAIService;
-        _selectedConfiguration = ConfigurationNames.FirstOrDefault() ?? string.Empty;
+        SelectedConfiguration = ConfigurationNames.FirstOrDefault() ?? string.Empty;
     }
 
     public event EventHandler? PromptSent;

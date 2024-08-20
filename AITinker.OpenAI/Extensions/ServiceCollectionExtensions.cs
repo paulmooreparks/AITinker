@@ -11,6 +11,7 @@ namespace AITinker.OpenAI.Extensions;
 public static class ServiceCollectionExtensions {
     private const string _tempKey = "Configurations:Test1:Settings";
     private const string _key = "Kits:OpenAI";
+    private const string _defaultsKey = "Kits:OpenAI:Defaults";
 
     [RegisterServices]
     public static IServiceCollection AddOpenAIServices(this IServiceCollection services, IConfiguration configuration) {
@@ -33,6 +34,15 @@ public static class ServiceCollectionExtensions {
         }
 
         services.AddSingleton(openAIConfig);
+
+        var openAIDefaults = configuration.GetSection(_defaultsKey).Get<OpenAIDefaults>();
+
+        if (openAIDefaults is null) {
+            openAIDefaults = new OpenAIDefaults();
+            configuration.GetSection(_defaultsKey).Bind(openAIDefaults);
+        }
+
+        services.AddSingleton(openAIDefaults);
 
         services.AddSingleton<OpenAIService>();
 

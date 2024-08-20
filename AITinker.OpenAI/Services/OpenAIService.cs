@@ -12,6 +12,7 @@ namespace AITinker.OpenAI.Services;
 
 public class OpenAIService : ILLMService {
     private readonly IWriteableSection<OpenAISettings> _config;
+    private readonly OpenAIDefaults _defaults;
     private readonly HttpClient _httpClient;
 
     public string ApiKey { 
@@ -25,7 +26,7 @@ public class OpenAIService : ILLMService {
 
     public string ApiUrl {
         get {
-            return _config.Value?.ApiUrl ?? "https://api.openai.com/v1/chat/completions";
+            return _config.Value?.ApiUrl ?? _defaults.ApiUrl ?? "https://api.openai.com/v1/chat/completions";
         }
         set {
             _config.Value.ApiUrl = value;
@@ -34,7 +35,7 @@ public class OpenAIService : ILLMService {
 
     public string Model {
         get {
-            return _config.Value?.Model ?? "gpt-4o-mini";
+            return _config.Value?.Model ?? _defaults.Model ?? "gpt-4o-mini";
         }
         set {
             _config.Value.Model = value;
@@ -43,7 +44,7 @@ public class OpenAIService : ILLMService {
 
     public string SystemContent {
         get {
-            return _config.Value?.SystemContent ?? "You are a helpful assistant.";
+            return _config.Value?.SystemContent ?? _defaults.SystemContent ?? "You are a helpful assistant.";
         }
         set {
             _config.Value.SystemContent = value;
@@ -52,15 +53,16 @@ public class OpenAIService : ILLMService {
 
     public double Temperature {
         get {
-            return _config.Value?.Temperature ?? 0.5;
+            return _config.Value?.Temperature ?? _defaults.Temperature ?? 0.5;
         }
         set {
             _config.Value.Temperature = value;
         }
     }
 
-    public OpenAIService(IWriteableSection<OpenAISettings> config) {
+    public OpenAIService(IWriteableSection<OpenAISettings> config, OpenAIDefaults defaults) {
         _config = config;
+        _defaults = defaults;
         _httpClient = new HttpClient();
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApiKey);
     }

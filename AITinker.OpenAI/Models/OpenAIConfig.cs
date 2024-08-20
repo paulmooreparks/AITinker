@@ -2,16 +2,23 @@
 
 public class OpenAIConfig {
     public OpenAIConfig() { 
-        Defaults = new OpenAISettings();
+        Defaults = new OpenAIDefaults();
         Options = new OpenAIOptions();
     }
 
-    public OpenAISettings? Defaults { get; set; }
+    public OpenAIDefaults? Defaults { get; set; }
     public OpenAIOptions? Options { get; set; }
 }
 
 public class OpenAISettings {
     public string? ApiKey { get; set; }
+    public string? ApiUrl { get; set; }
+    public string? Model { get; set; }
+    public string? SystemContent { get; set; }
+    public double? Temperature { get; set; }
+}
+
+public class OpenAIDefaults {
     public string? ApiUrl { get; set; }
     public string? Model { get; set; }
     public string? SystemContent { get; set; }

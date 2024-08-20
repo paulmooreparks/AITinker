@@ -2,6 +2,8 @@
 using AITinker.OpenAI.Services;
 using AITinker.ViewModels;
 
+using Microsoft.Extensions.Configuration;
+
 namespace AITinker;
 
 public partial class App : Application {
@@ -16,8 +18,9 @@ public partial class App : Application {
         var openAIService = serviceProvider.GetRequiredService<OpenAIService>();
         var chatViewModel = serviceProvider.GetRequiredService<ChatViewModel>();
         var configurations = serviceProvider.GetRequiredService<Configurations>();
+        var configuration = serviceProvider.GetRequiredService<IConfiguration>();
 
-        chatViewModel.SetServices(configurations, openAIService);
+        chatViewModel.SetServices(configuration, configurations, openAIService);
 
         MainPage = new Views.ChatPage() { BindingContext = chatViewModel };
     }
