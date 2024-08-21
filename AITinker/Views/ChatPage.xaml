@@ -112,8 +112,11 @@
                 ItemsSource="{Binding ConfigurationNames}" 
                 SelectedItem="{Binding SelectedConfiguration}"
                 />
-            <Label Text="Model:" />
-            <Entry Text="{Binding Model}" />
+            <Picker 
+                Title="Model:" 
+                ItemsSource="{Binding Models}" 
+                SelectedItem="{Binding Model}"
+                />
             <Label Text="Temperature:" />
             <Entry Text="{Binding Temperature}" Keyboard="Numeric" />
             <Label Text="System content:" />
@@ -126,13 +129,6 @@
                 Unfocused="Entry_Unfocused"
                 Placeholder="Enter API Key"
                 />
-            <!--               
-                Focused="Entry_Focused"
-                Unfocused="Entry_Unfocused"
-                Placeholder="Enter API Key"
-                IsReadOnly="{Binding IsEditingApiKey, Converter={StaticResource InverseBooleanConverter}}"
-            -->
-            <!-- Add more properties as needed -->
             <StackLayout.Shadow>
                 <Shadow
                     Brush="Black"

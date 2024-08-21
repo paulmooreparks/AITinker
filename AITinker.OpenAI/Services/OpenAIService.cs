@@ -13,7 +13,18 @@ namespace AITinker.OpenAI.Services;
 public class OpenAIService : ILLMService {
     private readonly IWriteableSection<OpenAISettings> _config;
     private readonly OpenAIDefaults _defaults;
+    private readonly OpenAIOptions _options;
     private readonly HttpClient _httpClient;
+    private List<Tuple<string, string>> _history;
+
+    public OpenAIService(IWriteableSection<OpenAISettings> config, OpenAIDefaults defaults, OpenAIOptions options) {
+        _config = config;
+        _defaults = defaults;
+        _options = options;
+        _history = new List<Tuple<string, string>>();
+        _httpClient = new HttpClient();
+        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApiKey);
+    }
 
     public string ApiKey { 
         get {
@@ -61,11 +72,8 @@ public class OpenAIService : ILLMService {
         }
     }
 
-    public OpenAIService(IWriteableSection<OpenAISettings> config, OpenAIDefaults defaults) {
-        _config = config;
-        _defaults = defaults;
-        _httpClient = new HttpClient();
-        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApiKey);
+    public OpenAIOptions Options {
+        get => _options;
     }
 
     public void SaveSettings() {
@@ -82,6 +90,22 @@ public class OpenAIService : ILLMService {
             };
 
             messageList.Add(systemMessage);
+        }
+
+        foreach (var item in _history) {
+            var historyPrompt = new {
+                role = "user",
+                content = item.Item1
+            };
+
+            messageList.Add(historyPrompt);
+
+            var historyResponse = new {
+                role = "assistant",
+                content = item.Item2
+            };
+
+            messageList.Add(historyResponse);
         }
 
         var prompt = new {
@@ -117,6 +141,7 @@ public class OpenAIService : ILLMService {
 
             if (choices is not null) {
                 llmResponse.Content = choices[0]?["message"]?["content"]?.ToString() ?? string.Empty;
+                _history.Add(Tuple.Create<string, string>(message, llmResponse.Content));
 
                 if (choices.Count() > 1) {
                     for (var i = 1; i < choices.Count(); i++) {
@@ -139,6 +164,16 @@ public class OpenAIService : ILLMService {
         }
         else {
             throw new Exception($"Error: {response.StatusCode}, Response:{Environment.NewLine}{await response.Content.ReadAsStringAsync()}");
+        }
+    }
+
+    public void UpdateFromSettings(ITinkerSettings settings) {
+        if (settings is not null and OpenAISettings openAISettings) {
+            ApiKey = openAISettings?.ApiKey ?? string.Empty;
+            ApiUrl = openAISettings?.ApiUrl ?? string.Empty;
+            Model = openAISettings?.Model ?? string.Empty;
+            SystemContent = openAISettings?.SystemContent ?? string.Empty;
+            Temperature = openAISettings?.Temperature ?? default;
         }
     }
 }

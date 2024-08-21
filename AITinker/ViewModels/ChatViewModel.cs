@@ -54,11 +54,7 @@ internal class ChatViewModel : INotifyPropertyChanged {
                 }
 
                 if (_openAIService is not null) {
-                    _openAIService.ApiKey = ApiKey;
-                    _openAIService.ApiUrl = ApiUrl;
-                    _openAIService.Model = Model;
-                    _openAIService.SystemContent = SystemContent;
-                    _openAIService.Temperature = Temperature;
+                    _openAIService.UpdateFromSettings(_settings);
                 }
 
                 OnPropertyChanged(string.Empty);
@@ -182,6 +178,10 @@ internal class ChatViewModel : INotifyPropertyChanged {
             OnPropertyChanged();
             OnPropertyChanged(nameof(ApiKeyDisplay));
         }
+    }
+
+    public string[] Models {
+        get => _openAIService?.Options.Model ?? [];
     }
 
     public ICommand SendMessageCommand { get; }

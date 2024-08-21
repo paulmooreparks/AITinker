@@ -12,6 +12,7 @@ public static class ServiceCollectionExtensions {
     private const string _tempKey = "Configurations:Test1:Settings";
     private const string _key = "Kits:OpenAI";
     private const string _defaultsKey = "Kits:OpenAI:Defaults";
+    private const string _optionsKey = "Kits:OpenAI:Options";
 
     [RegisterServices]
     public static IServiceCollection AddOpenAIServices(this IServiceCollection services, IConfiguration configuration) {
@@ -43,6 +44,15 @@ public static class ServiceCollectionExtensions {
         }
 
         services.AddSingleton(openAIDefaults);
+
+        var openAIOptions = configuration.GetSection(_optionsKey).Get<OpenAIOptions>();
+
+        if (openAIOptions is null) {
+            openAIOptions = new OpenAIOptions();
+            configuration.GetSection(_optionsKey).Bind(openAIOptions);
+        }
+
+        services.AddSingleton(openAIOptions);
 
         services.AddSingleton<OpenAIService>();
 

@@ -10,7 +10,7 @@ public class OpenAIConfig {
     public OpenAIOptions? Options { get; set; }
 }
 
-public class OpenAISettings {
+public class OpenAISettings : AITinker.Core.Models.ITinkerSettings {
     public string? ApiKey { get; set; }
     public string? ApiUrl { get; set; }
     public string? Model { get; set; }
